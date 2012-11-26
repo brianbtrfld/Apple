@@ -35,6 +35,9 @@
 		4C61328D165BF9A7007581B6 /* shockedface2_full.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C61328A165BF9A7007581B6 /* shockedface2_full.png */; };
 		4C61328E165BF9A7007581B6 /* shockedface2_half.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C61328B165BF9A7007581B6 /* shockedface2_half.png */; };
 		4C613290165BF9CD007581B6 /* appicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C61328F165BF9CD007581B6 /* appicon.png */; };
+		4C61329B1663F66E007581B6 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C61329A1663F66E007581B6 /* Default@2x.png */; };
+		4C61329E1664272D007581B6 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61329D1664272D007581B6 /* SVProgressHUD.m */; };
+		4C6132A01664280D007581B6 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C61329F1664280C007581B6 /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -76,6 +79,10 @@
 		4C61328A165BF9A7007581B6 /* shockedface2_full.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shockedface2_full.png; sourceTree = "<group>"; };
 		4C61328B165BF9A7007581B6 /* shockedface2_half.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shockedface2_half.png; sourceTree = "<group>"; };
 		4C61328F165BF9CD007581B6 /* appicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appicon.png; sourceTree = "<group>"; };
+		4C61329A1663F66E007581B6 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		4C61329C1664272D007581B6 /* SVProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD.h; sourceTree = "<group>"; };
+		4C61329D1664272D007581B6 /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
+		4C61329F1664280C007581B6 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C6132A01664280D007581B6 /* QuartzCore.framework in Frameworks */,
 				4C61323D165AD2DD007581B6 /* UIKit.framework in Frameworks */,
 				4C61323F165AD2DD007581B6 /* Foundation.framework in Frameworks */,
 				4C613241165AD2DD007581B6 /* CoreGraphics.framework in Frameworks */,
@@ -95,6 +103,7 @@
 		4C61322D165AD2DD007581B6 = {
 			isa = PBXGroup;
 			children = (
+				4C61329A1663F66E007581B6 /* Default@2x.png */,
 				4C613242165AD2DD007581B6 /* ScaryBugs */,
 				4C61323B165AD2DD007581B6 /* Frameworks */,
 				4C613239165AD2DD007581B6 /* Products */,
@@ -112,6 +121,7 @@
 		4C61323B165AD2DD007581B6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4C61329F1664280C007581B6 /* QuartzCore.framework */,
 				4C61323C165AD2DD007581B6 /* UIKit.framework */,
 				4C61323E165AD2DD007581B6 /* Foundation.framework */,
 				4C613240165AD2DD007581B6 /* CoreGraphics.framework */,
@@ -194,6 +204,8 @@
 		4C613284165BF8D9007581B6 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				4C61329C1664272D007581B6 /* SVProgressHUD.h */,
+				4C61329D1664272D007581B6 /* SVProgressHUD.m */,
 				4C61327B165BEB22007581B6 /* RateView.h */,
 				4C61327C165BEB22007581B6 /* RateView.m */,
 			);
@@ -277,6 +289,7 @@
 				4C61328D165BF9A7007581B6 /* shockedface2_full.png in Resources */,
 				4C61328E165BF9A7007581B6 /* shockedface2_half.png in Resources */,
 				4C613290165BF9CD007581B6 /* appicon.png in Resources */,
+				4C61329B1663F66E007581B6 /* Default@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,6 +308,7 @@
 				4C613269165AD60F007581B6 /* ScaryBugImage.m in Sources */,
 				4C61327D165BEB22007581B6 /* RateView.m in Sources */,
 				4C613288165BF989007581B6 /* UIImageExtras.m in Sources */,
+				4C61329E1664272D007581B6 /* SVProgressHUD.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -376,6 +390,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ScaryBugs/ScaryBugs-Prefix.pch";
 				INFOPLIST_FILE = "ScaryBugs/ScaryBugs-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -387,6 +402,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ScaryBugs/ScaryBugs-Prefix.pch";
 				INFOPLIST_FILE = "ScaryBugs/ScaryBugs-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -411,6 +427,7 @@
 				4C613261165AD2DD007581B6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

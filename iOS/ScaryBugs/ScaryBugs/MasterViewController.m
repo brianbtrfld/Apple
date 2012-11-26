@@ -31,10 +31,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
 	// Do any additional setup after loading the view, typically from a nib.
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
 
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc]
+                                  initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                  target:self
+                                  action:@selector(addTapped:)];
+    
     self.navigationItem.rightBarButtonItem = addButton;
     
     self.title = @"Scary Bugs";
@@ -53,15 +58,28 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)insertNewObject:(id)sender
+- (void)addTapped:(id)sender
 {
-    if (!_objects)
-    {
-        _objects = [[NSMutableArray alloc] init];
-    }
-    [_objects insertObject:[NSDate date] atIndex:0];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    
+    //add bug image
+    ScaryBugImage *newBugImage = [[ScaryBugImage alloc] initWithTitle:@"New Bug"
+                                                        rating:0
+                                                        thumbImage:nil
+                                                        fullImage:nil];
+    [_bugs addObject:newBugImage];
+    
+    
+    //select the row from the table view
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_bugs.count - 1 inSection:0];
+    NSArray *indexPaths = [NSArray arrayWithObject:indexPath];
+    
+    [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:YES];
+    
+    [self.tableView selectRowAtIndexPath:indexPath animated:YES
+                                                   scrollPosition:UITableViewScrollPositionMiddle];
+    
+    [self performSegueWithIdentifier:@"showDetail" sender:self];
+    
 }
 
 #pragma mark - Table View
@@ -93,12 +111,17 @@
     return YES;
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
+                                           forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        [_objects removeObjectAtIndex:indexPath.row];
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        //remove it from the data model
+        [_bugs removeObjectAtIndex:indexPath.row];
+        
+        //notify the table view a row is being deleted
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+                   withRowAnimation:UITableViewRowAnimationFade];
     }
     else if (editingStyle == UITableViewCellEditingStyleInsert)
     {
