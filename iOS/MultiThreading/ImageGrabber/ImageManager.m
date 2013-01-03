@@ -9,6 +9,7 @@
 #import "ImageManager.h"
 #import "ImageInfo.h"
 #import "ZipArchive.h"
+#import "ASIHTTPRequest.h"
 
 @implementation ImageManager
 @synthesize html;
@@ -74,7 +75,11 @@
     
     pendingZips--;
     
-    [delegate imageInfosAvailable:imageInfos done:(pendingZips==0)];
+    //[delegate imageInfosAvailable:imageInfos done:(pendingZips==0)];
+    dispatch_async(dispatch_get_main_queue(), ^(void)
+    {
+        [delegate imageInfosAvailable:imageInfos done:(pendingZips==0)];
+    });
         
 }
 
@@ -83,15 +88,39 @@
     
     NSLog(@"Getting %@...", sourceURL);
     
-    NSData * data = [NSData dataWithContentsOfURL:sourceURL];
-    if (!data)
-    {
-        NSLog(@"Error retrieving %@", sourceURL);
-        return;
-    }
+    //****old synchronous code****
     
-    [self processZip:data sourceURL:sourceURL];
+    //NSData * data = [NSData dataWithContentsOfURL:sourceURL];
+    //if (!data)
+    //{
+    //    NSLog(@"Error retrieving %@", sourceURL);
+    //    return;
+    //}
     
+    //[self processZip:data sourceURL:sourceURL];
+    
+    __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:sourceURL];
+    [request setCompletionBlock:^
+     {
+         NSLog(@"Zip file downloaded.");
+         NSData *data = [request responseData];
+         
+         //[self processZip:data sourceURL:sourceURL];
+         dispatch_async(backgroundQueue, ^(void)
+         {
+             [self processZip:data sourceURL:sourceURL];
+         });
+     }
+    ];
+    
+    [request setFailedBlock:^
+     {
+         NSError *error = [request error];
+         NSLog(@"Error downloading zip file: %@", error.localizedDescription);
+     }
+    ];
+
+    [request startAsynchronous];
 }
 
 - (void)processHtml {
@@ -139,14 +168,24 @@
     
     // Notify delegate in main thread that new image infos
     // available
-    [delegate imageInfosAvailable:imageInfos done:(pendingZips==0)];
+    
+    //[delegate imageInfosAvailable:imageInfos done:(pendingZips==0)];
+    dispatch_async(dispatch_get_main_queue(), ^(void)
+    {
+        [delegate imageInfosAvailable:imageInfos done:(pendingZips==0)];
+    });
     
 }
 
 - (void)process
 {
     
-    [self processHtml];
+    //[self processHtml];
+    
+    dispatch_async(backgroundQueue, ^(void)
+    {
+        [self processHtml];
+    });
     
 }
 
@@ -158,11 +197,17 @@
         html = theHtml;      
         delegate = theDelegate;
     }
+    
+    //CREATE the background queue
+    backgroundQueue = dispatch_queue_create("net.briangbutterfield.imagegrabber.backgroundqueue", NULL);
+    
     return self;
 }
 
 - (void)dealloc
 {
+    dispatch_release(backgroundQueue);
+    
     [super dealloc];
 }
 

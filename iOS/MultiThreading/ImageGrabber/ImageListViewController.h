@@ -10,7 +10,8 @@
 #import "ImageManager.h"
 @class ImageDetailViewController;
 
-@interface ImageListViewController : UITableViewController <ImageManagerDelegate>  {
+@interface ImageListViewController : UITableViewController <ImageManagerDelegate>
+{
     
 }
 
@@ -19,5 +20,7 @@
 @property (retain) ImageManager * imageManager;
 @property (retain) NSString * html;
 @property (retain) ImageDetailViewController * imageDetailViewController;
+
+- (void)imageUpdated:(NSNotification *)notify;
 
 @end

@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface ImageGrabberAppDelegate : NSObject <UIApplicationDelegate> {
-
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
+
 
 @end

@@ -79,6 +79,11 @@
     self.imageManager = [[[ImageManager alloc] initWithHTML:html delegate:self] autorelease];
     [imageManager process];
     
+    
+    //ADD observer.
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(imageUpdated:) name:@"net.briangbutterfield.imagegrabber.imageupdated" object:nil];
+    
+    
 }
 
 - (void)imageInfosAvailable:(NSArray *)newInfos done:(BOOL)done {
@@ -86,14 +91,16 @@
     NSLog(@"Image infos available: %d!", newInfos.count);
     
     NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:newInfos.count];
-    for(int i = imageInfos.count; i < imageInfos.count + newInfos.count; ++i) {
+    for(int i = imageInfos.count; i < imageInfos.count + newInfos.count; ++i)
+    {
         NSIndexPath * indexPath = [NSIndexPath indexPathForRow:i inSection:0];
         [indexPaths addObject:indexPath];
     }
     [imageInfos addObjectsFromArray:newInfos];
     [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationRight];
     
-    if (done) {
+    if (done)
+    {
         [activityIndicator stopAnimating];
     }
     
@@ -104,6 +111,9 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    
+    //REMOVE observer
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"net.briangbutterfield.imagegrabber.imageupdated" object:nil];
     
 }
 
@@ -211,12 +221,26 @@
 {
     // Navigation logic may go here. Create and push another view controller.
     ImageInfo *info = [imageInfos objectAtIndex:indexPath.row];
-    if (imageDetailViewController == nil) {
+    if (imageDetailViewController == nil)
+    {
         self.imageDetailViewController = [[[ImageDetailViewController alloc] initWithNibName:@"ImageDetailViewController" bundle:[NSBundle mainBundle]] autorelease];
     }
     imageDetailViewController.info = info;
     [self.navigationController pushViewController:imageDetailViewController animated:YES];
     
+}
+
+
+- (void)imageUpdated:(NSNotification *)notify
+{
+    ImageInfo *imageInfo = [notify object];
+    int row = [imageInfos indexOfObject:imageInfo];
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
+    
+    NSLog(@"Image for row %d updated.", row);
+    
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 @end
